@@ -1,10 +1,16 @@
 
 
 h1 {
+  display: flex;
+    justify-content: center;
+  
+}
+
+.title {
     display: flex;
     justify-content: center;
     padding-top: 4rem;
-  
+
 }
 p {
     display: flex;
@@ -18,7 +24,18 @@ body {
   height: 100vh;
 }
 
+.success, .error {
+ color: white;
+ padding: 5px;
+}
 
+.error {
+  background: rgb(190, 0, 0);
+}
+.success {
+  background:green;
+  margin: auto;
+}
 
 
 /* Modal popup box  https://www.w3schools.com/howto/howto_css_modals.asp */
@@ -167,3 +184,30 @@ input:checked + .slider:before {
   display:flex;
   justify-content: center;
 }
+
+/* Styles for the added book */
+.book {
+  display: flex;
+flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  margin: 20px;
+  background-color: #56c49e;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.author {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.pages {
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+

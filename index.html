@@ -11,14 +11,12 @@
 </head>
 <body>
 
-<div class="content" > 
+<div class="content">
   
-  <h1>A Book Library</h1>
+  <h1 class="title">A Book Library</h1>
   <p>A library project where you can store your books, coded for the Odin Project</p>
 
-</div>
-       
- <div class="display-lib"></div>
+
 
 
  <div id="addBtn_container" class="has-text-centered">
@@ -34,20 +32,26 @@
           <p><input type='text' id='author' name='author' placeholder='Author'></p>
           <p><input type='text' id='pages' name='pages' placeholder='Pages'></p>
       </div>
+      <div class="field">
+        <label class="label">Additional Notes</label>
+      <div class="control">
+        <textarea id='notes' class="textarea" placeholder="Notes"></textarea>
+      </div>
+      </div>
     <div id="switch_container">
       <span class="mark_as_read">Mark as read: </span>
       <label class="switch">
         <input type="checkbox">
         <span class="slider round"></span>
       </label>
-      
-    </div>
-
       <button class="button  is-success  is-rounded is-pulled-right" type='submit' form='form' id='addBtn'>Add</button>
+    </div>
+     
   </form>
 </div>
-
-
+</div>
+<h1>MY BOOKS</h1>
+<div class="display-lib"></div>
 
     <script src="app.js"></script>
 </body>
