@@ -1,58 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Library</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Library</title>
 </head>
+
 <body>
 
-<div class="content">
-  
-  <h1 class="title">A Book Library</h1>
-  <p>A library project where you can store your books, coded for the Odin Project</p>
+  <div class="content">
+
+    <h1 class="title">A Book Library</h1>
+    <p>A library project where you can store your books, coded for the Odin Project</p>
 
 
 
 
- <div id="addBtn_container" class="has-text-centered">
-  <a id="newBtn" class="button is-primary is-inverted">Add a New Book</a>
-</div>
- 
-<div id="popUp">
-  <form id='form'>
-      <span class="close">&times;</span>
-      <ledgend>New Book</ledgend>
-      <div id='textInput'> 
+    <div id="addBtn_container" class="has-text-centered">
+      <a id="newBtn" class="button is-primary is-inverted">Add a New Book</a>
+    </div>
+
+    <div id="popUp" >
+      <form id='form'>
+      <header class="modal-card-head">
+        <p class="modal-card-title">New Book</p>
+      <span class="delete" id="close" aria-label="close"></span>
+            </header>
+
+      <section class="modal-card-body">
+        <div id='textInput'>
           <p><input type='text' id='title' name='title' placeholder='Title'></p>
           <p><input type='text' id='author' name='author' placeholder='Author'></p>
           <p><input type='text' id='pages' name='pages' placeholder='Pages'></p>
-      </div>
-      <div class="field">
-        <label class="label">Additional Notes</label>
-      <div class="control">
-        <textarea id='notes' class="textarea" placeholder="Notes"></textarea>
-      </div>
-      </div>
-    <div id="switch_container">
-      <span class="mark_as_read">Mark as read: </span>
-      <label class="switch">
-        <input type="checkbox">
-        <span class="slider round"></span>
-      </label>
-      <button class="button  is-success  is-rounded is-pulled-right" type='submit' form='form' id='addBtn'>Add</button>
-    </div>
-     
-  </form>
-</div>
-</div>
-<h1>MY BOOKS</h1>
-<div class="display-lib"></div>
+        </div>
+          <p class="modal-card-title">Notes</p>
+              <textarea id='notes' class="textarea" placeholder="Notes"></textarea>
+      </section>
+       
+  
+          <footer class="modal-card-foot">
+          
+          <span class="mark_as_read">Mark as read: </span>
+          <label class="switch">
+            <input type="checkbox" value="yes" id='read' name='read'>
+            <span class="slider round"></span>
+          </label>
+          <button class="button  is-success  is-rounded is-pulled-right" type='submit' form='form'
+            id='addBtn'>Add</button></div>
+         
+        </footer>
 
-    <script src="app.js"></script>
+      </form>
+    </div>
+  </div> 
+
+
+  <h1>MY BOOKS</h1>
+  <div class="display-lib">
+    <table>
+      <tbody id="book-list">
+
+      </tbody>
+    </table>
+  </div>
+
+  </tbody>
+
+  <script src="app.js"></script>
 </body>
+
 </html>
