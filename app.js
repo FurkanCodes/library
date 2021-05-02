@@ -1,20 +1,18 @@
 // ############ Selectors ############
 
-
+    //Add a book form pop up
 const newBtn = document.querySelector('#newBtn');
+    //add the new book to the library
 const addBtn = document.querySelector('#addBtn');
-const closeSpan = document.querySelector('.delete');
+    // close span
+const closeSpan = document.querySelector('#close');
+    // display the new book
 const display = document.querySelector('.display-lib');
-
-
-
 //############ Listeners ############
 
-
-
-// pop up the modal
+    // pop up the modal
 newBtn.addEventListener('click', function () {
-    popUp.style.display = "block";
+    document.getElementById("popUp").style.display = "block";
 })
 
 // closes the form
@@ -28,61 +26,72 @@ window.addEventListener('click', function (e) {
         popUp.style.display = "none";
     }
 })
-addBtn.addEventListener('click', function(){
-    const titleBook = document.querySelector('#title').value;
-    const authorBook = document.querySelector('#author').value;
-    const pagesBook = document.querySelector('#pages').value;
-    const notesBook = document.querySelector('#notes').value;
-    const readBook = document.querySelector('#read').checked;
-    if (titleBook === "" || authorBook === "" || pagesBook === "" || notesBook === "") {
-        showAlert("Please fill in all the blanks", 'error');
-    } else {
-        book = new Book(titleBook, authorBook, pagesBook, notesBook, readBook);
-        myLibrary.push(book);
-        displayBook(book);
-        showAlert("book is added", 'success');
-    }
-    event.preventDefault();
-});
 
 
-
+let counter = 0;
 let myLibrary = [];
 
-function Book(title, author, pages, notes, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.notes = notes;
-    this.read = read;
+
+addBtn.addEventListener('click', (e) => {
+    const title = document.querySelector('#title').value,
+        author = document.querySelector('#author').value,
+        pages = document.querySelector('#pages').value,
+        notes = document.querySelector('#notes').value,
+        read = document.querySelector('#read').checked;
+
+    if (title === '' || author === '' || pages === '' || notes === '') {
+        UI.showAlert('Fill in the all the fields', 'error');
+    } else {
+        const newBook = new Book(title, author, pages, notes, read);
+        //add bo to the UI
+        UI.createBook(newBook);
+        //add book to the library array
+        myLibrary.push(newBook);
+
+        Storage.setData(newBook);
+        UI.showAlert('book added', 'success');
+        //function to clear input after submitted
+        UI.clearFields();
+        
+
+    }
+
+    e.preventDefault();
+});
+
+// ################# CLASSES #######################
+
+class Book {
+    constructor(title, author, pages, notes, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.notes = notes;
+        this.read = read;
+
+    }
 }
 
-function addBookToLibrary() {
+class UI {
 
-    const titleBook = document.querySelector('#title').value;
-    const authorBook = document.querySelector('#author').value;
-    const pagesBook = document.querySelector('#pages').value;
-    const notesBook = document.querySelector('#notes').value;
-    const readBook = document.querySelector('#read').checked;
-    if(titleBook === "" && authorBook === "" && pagesBook === "" && notesBook === ""){
-        showAlert("Please fill in all the blanks", 'success');
-    } else {
-        book = new Book(titleBook, authorBook, pagesBook, notesBook, readBook);
-        myLibrary.push(book);
-        displayBook(book);
-       showAlert("book is added", 'success');
-       
+    static render() {
+        const display = document.getElementById('book-list');
+    const books = document.querySelectorAll('.book');
+   
+
+    for (let i = 0; i < myLibrary.length; i++) {
+        UI.createBook(myLibrary[i]);
     }
-event.preventDefault();
-} 
+}
 
+    static createBook(book) {
+        const shelf = document.querySelector('#book-list');
+        const row = document.createElement('th');
 
-function displayBook(book) {
-    const shelf = document.querySelector('#book-list');
-    const row = document.createElement('th');
+        row.setAttribute("id", "" + counter);
+        counter += 1; //Increment the count
 
-
-    row.innerHTML = `
+        row.innerHTML = `
         <div class="book"> 
             <div class="title">Title: ${book.title}</div>
                  <p class="author">Author: ${book.author}</p>
@@ -96,48 +105,80 @@ function displayBook(book) {
              <a href="#" class="delete"></a>
         </div>
             `;
-    const dltBtn = row.querySelector('.delete');
-    dltBtn.addEventListener('click', function (e) {
-        deleteBook(e.target);
-        showAlertDelete('book removed', 'success');
-    })
-    if (book.read) {
-        row.querySelector('#read').checked = true;
+        if (book.read) {
+            row.querySelector('#read').checked = true;
+        } 
+        //delete the book
+        const dlt = row.querySelector('.delete');
+        dlt.addEventListener('click', function (e) {
+            UI.deleteBook(e.target);
+            UI.showAlertDelete('book removed', 'success');
+          
+        })
+        shelf.appendChild(row);
     }
-    shelf.appendChild(row);
+    static clearFields() {
+        document.querySelector('#title').value = '';
+        document.querySelector('#author').value = '';
+        document.querySelector('#pages').value = '';
+        document.querySelector('#notes').value = '';
+        document.querySelector('#read').checked;
+    }
+    static deleteBook(target) {
+        if (target.className === 'delete') {
+            target.parentElement.remove();
+            Storage.removeBook();
+          
+        }
 
-};
+    }
+    // the alert prototoype function
+   static showAlert(message, className) {
+        const div = document.createElement('div');
+        div.className = `alert ${className}`;
+        div.appendChild(document.createTextNode(message));
+        const form = document.querySelector('#form');
+        form.appendChild(div);
+        setTimeout(function () {
+            document.querySelector('.alert').remove();
+        }, 3000);
 
+    }
+    static showAlertDelete(message, className) {
+        const div = document.createElement('div');
+        div.className = `alert ${className}`;
+        div.appendChild(document.createTextNode(message));
+        const form = document.querySelector('.content');
+        form.appendChild(div);
+        setTimeout(function () {
+            document.querySelector('.alert').remove();
+        }, 3000);
 
-// ######### ALERTS FOR THE UI ###########
+    }
 
-function showAlert(message, className) {
-    const div = document.createElement('div');
-    div.className = `alert ${className}`;
-    div.appendChild(document.createTextNode(message));
-    const form = document.querySelector('#form');
-    form.appendChild(div);
-    setTimeout(function () {
-        document.querySelector('.alert').remove();
-    }, 3000);
- 
 }
 
-function showAlertDelete(message, className) {
-    const div = document.createElement('div');
-    div.className = `alert ${className}`;
-    div.appendChild(document.createTextNode(message));
-    const form = document.querySelector('.content');
-    form.appendChild(div);
-    setTimeout(function () {
-        document.querySelector('.alert').remove();
-    }, 3000);
 
-}
 
-// function that deletes the book. aims at parentElements
-function deleteBook(target) {
-    if (target.className === 'delete') {
-        target.parentElement.parentElement.remove();
+class Storage {
+    static setData() {
+        localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+    }
+    static restore(){
+        if (!localStorage.myLibrary) {
+            UI.render();
+        } else {
+            let objects = localStorage.getItem('myLibrary') // gets information from local storage to use in below loop to create DOM/display
+            objects = JSON.parse(objects);
+            myLibrary = objects;
+            UI.render();
+        }
+    }
+    static removeBook(index) {
+        const existingEntries = JSON.parse(localStorage.getItem("myLibrary"));
+        existingEntries.splice(index, 1);
+        localStorage.setItem("myLibrary", JSON.stringify(existingEntries));
     }
 }
+
+    Storage.restore();
